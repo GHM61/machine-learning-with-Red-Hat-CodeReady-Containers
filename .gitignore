@@ -1,0 +1,6 @@
+__pycache__
+*.txt
+.DS_Store
+resources/.DS_Store
+reference/.DS_Store
+templates/.DS_Store
