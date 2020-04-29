@@ -2,9 +2,11 @@
 
 ## Machine learning dependencies are a hassle...
 
+Note: this lab is an adaptation of initial lab https://github.com/IBMDeveloperUK/machine-learning-with-minishift from Sean Tracey. This initial version is usinig Minishift, the local version of OpenShift v3. Present version is using Red Hat Code Ready Containers, which is local version of OpenShift v4.
+
 Between ensuring that the right version Python/Pip are installed on your system, and that it doesn't conflict with other Python/Pip versions on your system AND that when you deploy your model to the cloud that the versions of the dependencies you've used in your projects are still compatible with the version on your cloud-based system, it's a wonder that we ever get any time to focus on building and training our neural networks.
 
-Fortunately, there's a way to ensure that all of this is a never a problem again - Containers! (specifically, [Minishift](https://github.com/minishift/minishift) )
+Fortunately, there's a way to ensure that all of this is a never a problem again - Containers! (specifically, [Red Hat Code Ready Containers](https://developers.redhat.com/blog/2019/09/05/red-hat-openshift-4-on-your-laptop-introducing-red-hat-codeready-containers/)
 
 With containers, we can create a clean, virtual environment to setup and train our neural networks in and then deploy them at scale with the _exact same_ same environment. No more dependency hell!
 
@@ -26,9 +28,9 @@ Cracking, then let's get started!
 
 1) How to build a Convolutional Neural Network (CNN) that can detect handwritten digits (with Keras and the MNIST dataset)
 2) How to train and deploy a CNN with the Flask web framework and Keras
-3) How to install and run Minishift (a locally run OpenShift cluster of one image) on your machine
+3) How to install and run Red Hat Code Ready Containers (a locally run OpenShift cluster) on your machine
 4) How to create a project in OpenShift
-5) How to create an app in OpenShift and pull the source code for application from GitHub
+5) How to create an Python app in OpenShift and pull the source code for your application from GitHub
 
 By the end, you'll end up with a natty web app that will tell you what characters you're drawing, that'll look like this:
 
@@ -36,12 +38,12 @@ By the end, you'll end up with a natty web app that will tell you what character
 
 ## Before We Start...
 
-It's probably best that you install Minishift before we start diving into neural networking goodness. [Mofe Salami](https://twitter.com/Moffusa) has put together a [fantastic workshop](https://github.com/IBMDeveloperUK/minishift101/tree/master/workshop) that walks you through the installation and basic setup of Minishift. If you pop on over there and follow just the setup steps of the workshop, then head back here, we'll be good to crack on.
+It's probably best that you install Red Hat Code Ready Containers (CRC for short) before we start diving into neural networking goodness. Please have a look at [this article](https://developers.redhat.com/blog/2019/09/05/red-hat-openshift-4-on-your-laptop-introducing-red-hat-codeready-containers/) that walks you through the installation and basic setup of CRC. If you pop on over there and follow just the setup steps, then head back here, we'll be good to crack on.
 
 ## You Will Need:
 
 1. A GitHub account
-2. A macOS/Windows/Linux system capable of running Minishift
+2. A macOS/Windows/Linux system capable of running CRC (see prerequisites [here](https://developers.redhat.com/blog/2019/09/05/red-hat-openshift-4-on-your-laptop-introducing-red-hat-codeready-containers/))
 3. A modern web browser
 
 ## Recognising Handwritten Digits with Keras + the MNIST Dataset
@@ -56,7 +58,7 @@ Training neural networks (NNs) to classify handwritten digits has become somethi
 
 The code in this repo is a scaffold for the neural network and app that you'll end up with if you follow this workshop to the end.
 
-So we can get the full benefit of Minishift's ability to pull code from a centralised repository and deploy it, you'll need to fork this repo to create your own version of it to work from.
+So we can get the full benefit of CRTC's ability to pull code from a centralised repository and deploy it, you'll need to fork this repo to create your own version of it to work from.
 
 You can do that with the following steps
 
@@ -81,7 +83,7 @@ This will create a copy of this repository that you'll be able to make changes t
 If you take a moment to look at the project you just cloned, you'll see a bunch of files and folders. Here is a brief description of each one
 
 1. `reference` - A complete implementation of the project that we'll be making.
-2. `app.py` - The main entry point for our program. When we run our project shortly, Minishift will look for and execute this script
+2. `app.py` - The main entry point for our program. When we run our project shortly, CRC will look for and execute this script
 3. `requirements.txt` - A text file which describes which dependencies our project will need to install to support our program.
 4. `server.py` - The code that will serve our prediction web app.
 5. `train.py` - The code that contains our neural network which will begin training the first time we run our app.
@@ -285,7 +287,7 @@ def classifyCharacter():
     return json.dumps( { 'prediction' : int(stored_model.predict_classes( reshapedData )[0]) } )
 ```
 
-Our first route will serve the `index.html` file from the `resources` folder (included when from the repo that we forked our copy from) when a request is made to `/` on our server.
+Our first route will serve the `index.html` file from the `resources` folder (created from the repo that we forked our copy from) when a request is made to `/` on our server.
 
 The second route will accept an array of pixel values passed in a JSON formatted array to `/predict`. These values will be reshaped to fit the dimensions that our neural network expects as input, and will then be classified by the network. The result of the neural network is then passed back as a response to the request as a JSON formatted object.
 
@@ -303,7 +305,7 @@ def start():
 
 Before we start listening for requests from client, we need to load our trained model for classifying our inputs with `keras.models.load_model('mnist.h5')`.
 
-Once that's loaded, we'll tell our Flask server to start listening for requests. By default, Minishift will pass through traffic to an application on port `8080`. As such, we will tell our server to listen for requests on that port.
+Once that's loaded, we'll tell our Flask server to start listening for requests. By default, CRC will pass through traffic to an application on port `8080`. As such, we will tell our server to listen for requests on that port.
 
 ## To train, or to serve?
 
@@ -339,7 +341,7 @@ else:
 
 That's it! We now have everything we need to train a model, serve the same model, and deploy it to an OpenShift cluster!
 
-Now, after all of this hard work, it's time to put it somewhere that our Minishift cluster will be able to find it, so we'll commit our changes and then push them back to GitHub.
+Now, after all of this hard work, it's time to put it somewhere that our CRC cluster will be able to find it, so we'll commit our changes and then push them back to GitHub.
 
 Head to your terminal and run the following commands in the directory you cloned your fork of the repo to:
 
