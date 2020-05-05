@@ -2,11 +2,11 @@
 
 ## Machine learning dependencies are a hassle...
 
-Note: this lab is an adaptation of initial lab https://github.com/IBMDeveloperUK/machine-learning-with-minishift from Sean Tracey. This initial version is usinig Minishift, the local version of OpenShift v3. Present version is using Red Hat Code Ready Containers, which is local version of OpenShift v4.
+Note: this lab is an adaptation of initial lab https://github.com/IBMDeveloperUK/machine-learning-with-minishift from Sean Tracey. The initial version was usinig Minishift, the local version of OpenShift v3. Present version is using Red Hat Code Ready Containers (a.k.a. CRC), which is local version of OpenShift v4.
 
 Between ensuring that the right version Python/Pip are installed on your system, and that it doesn't conflict with other Python/Pip versions on your system AND that when you deploy your model to the cloud that the versions of the dependencies you've used in your projects are still compatible with the version on your cloud-based system, it's a wonder that we ever get any time to focus on building and training our neural networks.
 
-Fortunately, there's a way to ensure that all of this is a never a problem again - Containers! (specifically, [Red Hat Code Ready Containers](https://developers.redhat.com/blog/2019/09/05/red-hat-openshift-4-on-your-laptop-introducing-red-hat-codeready-containers/)
+Fortunately, there's a way to ensure that all of this is a never a problem again - Containers! (specifically, [Red Hat Code Ready Containers](https://developers.redhat.com/blog/2019/09/05/red-hat-openshift-4-on-your-laptop-introducing-red-hat-codeready-containers/))
 
 With containers, we can create a clean, virtual environment to setup and train our neural networks in and then deploy them at scale with the _exact same_ same environment. No more dependency hell!
 
@@ -353,24 +353,28 @@ Head to your terminal and run the following commands in the directory you cloned
 
 This will commit and push all of the files for our application to your GitHub repository.
 
-Now it's time for some Minishift goodness.
+Now it's time for some CRC goodness.
 
-## Deploying our application to Minishift.
+## Deploying our application to CRC.
 
 ### Creating our project + application
-If you didn't install and setup Minishift at the start of this tutorial with [Mofe's guide](https://github.com/IBMDeveloperUK/minishift101/tree/master/workshop), go and do that now.
+If you didn't install and setup CRC at the start of this tutorial with [this article](https://developers.redhat.com/blog/2019/09/05/red-hat-openshift-4-on-your-laptop-introducing-red-hat-codeready-containers/), go and do that now.
 
-If you have, then it's time to fire Minishift up 🚀
+Do not forget to pull your secret from: https://cloud.redhat.com/openshift/install/crc/installer-provisioned  
+We recommend you put it in a "pull-secret" file at the place you lanch your command lines commands? 
+Now, it's time to fire CRC up 🚀
 
-In your terminal window execute the following to start Minishift:
+In your terminal window execute the following to start CRC:
 
-`minishift start --vm-driver hyperkit --network-nameserver 8.8.8.8`
+`crc start -p ./pull-secret -n 8.8.8.8`
 
-This will spin up the Minishift platform with the hyperkit driver, and allow local network traffic to access it.
+This will spin up the CRC platform with the relevant driver (hyperkit on a Mac for example), and allow local network traffic to access it.
 
 Depending on your system's resource, it may take a little while to spin up, so take the opportunity to go and grab a cup of tea.
 
-Once minishift has finished spinning up, you should see an output in your terminal a bit like the following:
+Once CRC has finished spinning up, you should see an output in your terminal a bit like the following:
+
+XXXXXX J EN SUIS LA XXXXXXXXXX
 
 ![A image showing the text output of Minishift once it's started](/resources/minishift_start.png)
 
