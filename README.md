@@ -513,68 +513,88 @@ Head back to your terminal and follow these steps...
 First, we need to make sure we can access the Openshift CLI tool. 
 When you run you "crc start" command, you get the following `INFO` message:
 
-`INFO To access the cluster, first set up your environment by following 'crc oc-env' instructions `
+```
+INFO To access the cluster, first set up your environment by following 'crc oc-env' instructions 
+```
 
 So proceed and enter: `crc oc-env` on the command line
 
-`$crc oc-env`
+```
+$crc oc-env
+```
 
 You will get the following answer:
 
-`export PATH="/Users/ghmoll/.crc/bin:$PATH"`
-`# Run this command to configure your shell:`
-`# eval $(crc oc-env)`
+```
+export PATH="/Users/ghmoll/.crc/bin:$PATH"
+# Run this command to configure your shell:
+# eval $(crc oc-env)
+```
 
 So, proceed as suggested (of YOUR PATH is different)
 
 Next, we want to login with the oc CLI tool with our developer credentials 
 If you do not remember your credentials, type:
-`$crc console --credentials` 
+```
+$crc console --credentials
+```
 
 Now type your login line, in my case:
-`oc login -u developer -p developer https://api.crc.testing:6443`
+```
+oc login -u developer -p developer https://api.crc.testing:6443
+```
 
 This will set our user for our following commands.
 
 Next, we want to get a list of pods in our deployment, which we can get with:
 
-`oc get pods`
+```
+oc get pods
+```
 
 This should output something like this:
-`NAME                                 READY   STATUS      RESTARTS   AGE`
-`mnist-recognition-5-build            0/1     Completed   0          24h`
-`mnist-recognition-6945c94bf8-fcsgz   1/1     Running     1          24h`
+```
+NAME                                 READY   STATUS      RESTARTS   AGE
+mnist-recognition-5-build            0/1     Completed   0          24h
+mnist-recognition-6945c94bf8-fcsgz   1/1     Running     1          24h
+```
 
 If you have run multiple builds in CRC, you may have multiple entries, but we're not interested in those, we're only interested in the running pod.
 
 Copy the pod name, and then run the following command to SSH into your machine
 
-`oc rsh <YOUR POD NAME>`
+```
+oc rsh <YOUR POD NAME>
+```
 
 This will give you a shell environemt that you can use to interact with your pod. At this point we want to run the following command to list the directory and find our apps current working path
 
-`ls -la && pwd`
+```
+ls -la && pwd
+```
 
 This will list all of the files and directories for our application, and then the working directory for our app, which should be something like `/opt/app-root/src`. Look familiar?
 
-`drwxrwxr-x. 1 default    root       55 May  7 15:43 .`
-`drwxrwxr-x. 1 default    root       28 May  6 15:13 ..`
-`-rw-rw-r--. 1 default    root      308 May  6 15:01 app.py`
-`drwxrwxr-x. 8 default    root      178 May  6 15:01 .git`
-`-rw-rw-r--. 1 default    root       81 May  6 15:01 .gitignore`
-`drwxr-xr-x. 3 1000540000 root       40 May  7 15:13 .keras`
-`-rw-r--r--. 1 1000540000 root 14432504 May  7 15:43 mnist.h5`
-`drwxrwxr-x. 1 default    root       19 Jan 29 14:13 .pki`
-`drwxr-xr-x. 2 1000540000 root       63 May  7 15:13 __pycache__`
-`-rw-rw-r--. 1 default    root    31926 May  6 15:01 README.md`
-`drwxrwxr-x. 3 default    root       70 May  6 15:01 reference`
-`-rw-rw-r--. 1 default    root       28 May  6 15:01 requirements.txt`
-`drwxrwxr-x. 2 default    root     4096 May  6 15:01 resources`
-`-rw-rw----. 1 default    root     1024 Mar 17 17:02 .rnd`
-`-rw-rw-r--. 1 default    root      762 May  6 15:01 server.py`
-`drwxrwxr-x. 2 default    root       24 May  6 15:01 templates`
-`-rw-rw-r--. 1 default    root     2263 May  6 15:01 train.py`
-`/opt/app-root/src`
+```
+drwxrwxr-x. 1 default    root       55 May  7 15:43 .
+drwxrwxr-x. 1 default    root       28 May  6 15:13 ..
+-rw-rw-r--. 1 default    root      308 May  6 15:01 app.py
+drwxrwxr-x. 8 default    root      178 May  6 15:01 .git`
+-rw-rw-r--. 1 default    root       81 May  6 15:01 .gitignore
+drwxr-xr-x. 3 1000540000 root       40 May  7 15:13 .keras
+-rw-r--r--. 1 1000540000 root 14432504 May  7 15:43 mnist.h5
+drwxrwxr-x. 1 default    root       19 Jan 29 14:13 .pki
+drwxr-xr-x. 2 1000540000 root       63 May  7 15:13 __pycache__
+-rw-rw-r--. 1 default    root    31926 May  6 15:01 README.md`
+drwxrwxr-x. 3 default    root       70 May  6 15:01 reference`
+-rw-rw-r--. 1 default    root       28 May  6 15:01 requirements.txt
+drwxrwxr-x. 2 default    root     4096 May  6 15:01 resources
+-rw-rw----. 1 default    root     1024 Mar 17 17:02 .rnd
+-rw-rw-r--. 1 default    root      762 May  6 15:01 server.py
+drwxrwxr-x. 2 default    root       24 May  6 15:01 templates
+-rw-rw-r--. 1 default    root     2263 May  6 15:01 train.py
+/opt/app-root/src
+```
 
 Notice how there's a file called `mnist.h5`. This is the file where our ML model is saved - that's what we want to save.
 
@@ -584,7 +604,9 @@ With the path we've just copied, we're going to download the file to our local f
 
 Enter the following to download the `mnist.h5` file from our pod to our local filesystem
 
-`oc rsync <YOUR POD NAME>:/opt/app-root/src/mnist.h5 ./`
+```
+oc rsync <YOUR POD NAME>:/opt/app-root/src/mnist.h5 ./
+```
 
 This will write the `mnist.h5` file to your local filesystem. Hurrah!
 
@@ -592,10 +614,12 @@ Now, we can commit that to our Git repository so that if we build our applicatio
 
 To do this, enter:
 
-`git add .`
+```
+git add .
 
-`git commit -m "Saving pre-trained model for deployment"`
+git commit -m "Saving pre-trained model for deployment"
 
-`git push origin master`
+git push origin master
+```
 
-And Voila! We've learned how to build, train, and deploy a neural network with CodeReady Containers.
+Et Voilà! We've learned how to build, train, and deploy a neural network with CodeReady Containers.
