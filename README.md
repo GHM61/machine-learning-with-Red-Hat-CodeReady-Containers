@@ -374,79 +374,106 @@ Depending on your system's resource, it may take a little while to spin up, so t
 
 Once CRC has finished spinning up, you should see an output in your terminal a bit like the following:
 
-XXXXXX J EN SUIS LA XXXXXXXXXX
+`INFO Starting OpenShift cluster ... [waiting 3m]  `
+`INFO    `                                          
+`INFO To access the cluster, first set up your environment by following 'crc oc-env' instructions `
+`INFO Then you can access it by running 'oc login -u developer -p developer https://api.crc.testing:6443' `
+`INFO To login as an admin, run 'oc login -u kubeadmin -p kKdPx-pjmWe-b3kuu-jeZm3 https://api.crc.testing:6443' `
+`INFO   `                                           
+`INFO You can now run 'crc console' and use these credentials to access the OpenShift web console `
 
-![A image showing the text output of Minishift once it's started](/resources/minishift_start.png)
 
-Your https:// address will be different to the one displayed here.
 
-Copy that URL and enter it into your browser. You should be presented with a login dialog that looks like this:
+Your admin password will be different to the one displayed here.
 
-![A image showing the Minishift login page](/resources/minishift_login.png)
+You can now launch your console with suggested command:
+`crc console`
 
-For the username enter `developer`, for the password, enter anything you like at all.
+The console should look like this:
 
-Once you've logged in, you'll be presented with the Minishift console.
+![A image showing the CRC initial screen](/resources/console_initial_screen.png)
 
-![A image showing the Minishift console](/resources/minishift_console.png)
+Click on the lower button, to get to the login screen:
 
-Here, we can create a project and configure an app to be run. So let's do that!
+![A image showing the CRC login screen](/resources/console_login_screen.png)
 
-In the console page, there's a big, friendly "Python" button. Click it to start creating our project.
+Enter `developer` as user and password, as suggested by the "INFO" lines previously displayed.
 
-![A image showing the Minishift project creation UI](/resources/minishift_project_creation.png)
+Once you've logged in, you'll be presented with the CRC console.
 
-Fill in the values for project with the following values:
+![A image showing the CRC console](/resources/crc_console.png)
 
-#### Project Name
-keras-mnist
+Now you should create a project:
 
-#### Project Name
-keras-mnist
+![A image showing how to create a project](/resources/create_project.png)
 
-#### Application Name
-mnist-recognition
+Name it "keras-mnist":
 
-For the Git repository, we want to add the URL for the forked copy of the project Git repo that we just commited to. Head to your forked version and click the 'Clone or download' button again. Make sure to copy the HTTP version of the URL, as Minishift hasn't been configured to get source code over SSH. Paste that value into the Git Repository field and then click 'Next'.
+![A image showing how to name a project](/resources/name_project.png)
 
-You'll then see a dialog describing the creation of your project and app. Click 'Close' when this process has finished.
+Add an application "from git":
+
+![A image showing how to add an application from git to a project](/resources/add_application.png)
+
+Fill the "import from git" form:
+
+![A image showing how to fill the import from git form](/resources/fill_import_from_git_form.png)
+
+For the "git repo URL" field, we want to add the URL for the forked copy of the project Git repo that we just commited to. Head to your forked version and click the 'Clone or download' button again. Make sure to copy the HTTP version of the URL, as CRC hasn't been configured to get source code over SSH. Paste that value into the "git repo URL" field.
+
+Click on the "Python" button.
+
+Then fill the rest of the form:
+
+![rest of the form1](/resources/rest_of_the_form1.png)
+
+Scroll down, finish filling this form, and click "create":
+
+![rest of the form2](/resources/rest_of_the_form2.png)
 
 ### Building our application
 
-At this point, Minishift will request the source code for our project and copy it to start the build process. On the right hand side of the console, you will see your newly created project. Click on it to head to the admin page for it.
+At this point, Code Ready will request the source code for our project and copy it to start the build process. 
 
-On the left-hand side of your console, you will see a list of options. Once our source code has been retrieved from GitHub, Minishift will start to build our app. We can check out how that's going by clicking on `Build` (highlighted in red), then `Builds` (highlighted in green) from the menu, and then clicking on the number for our build along side our app (highlighted in blue).
+You can click on the "topology" tab to get on overview of what is going on.
 
-![A image showing the Minishift admin dashboard](/resources/minishift_build.png)
+![rest of the form2](/resources/topology_tab.png)
 
-This will take us through to the build status page for our app. By clicking on `Logs` (highlighted in orange), we can track the progress of our apps build.
+It will lead you to a view like this:
 
-![A image showing the Minishift app build dashboard](/resources/minishift_app_status_page.png)
+![topology view](/resources/topology_view.png)
 
-Which looks like this:
+From there, yiu can click on the "build pendind" hourglass, or on the "builds" tab
 
-![A image showing the Minishift app build dashboard](/resources/minishift_build_logs.png)
+![build tab](/resources/build_tab.png)
+
+You now see current build.
+You can click on it.
+
+![click_on_current_build](/resources/click_on_current_build.png)
+
+You can see that the build is now running.
+To follow the building steps, click on the log tab:
+
+This will take us through to the build status page for our app. By clicking on `Logs` tab, we can track the progress of our apps build.
+
+![build_is_running](/resources/build_is_running.png)
 
 ### Training our network
 
-Once the build has finished, it will start our app!
+Once the build has finished, it will show a message in the log file:
+
+![build_is_finished](/resources/build_is_finished.png)
+
+Then, our app will automatically start !
 
 On first run, our app won't have a trained network for it to make classifications with, so it'll grab the MNIST dataset and start training the neural network we created in `train.py`.
 
 Depending on the system, this can take a while (what doesn't in machine learning?) but we can check on the status of the training from our console.
 
-To view the state of our app, we can click on `Applications` on the left hand side of the screen (highlighted in fuscia), and then `Deployments` (highlighted in green).
+To view the state of our app, switch to "Administrator", "workloads/pods" and finally on the "Logs" tab.
 
-![A image showing the Minishift app build dashboard](/resources/minishift_deploys.png)
-
-This takes us through to our deployments page. Click on the highlighted number under 'Last Version' for your app, and that will take you to the overview for your application.
-
-From here, we can click on the `Logs` tab (highlighted in red) to view the training progress of our neural network.
-
-![A image showing the Minishift app build overview](/resources/minishift_app_status_page.png)
-
-
-![A image showing the Minishift training logs](/resources/minishift_training_progress.png)
+![training_log](/resources/training_log.png)
 
 This will take some time to complete, so finish up your last tea, and go and grab another ☕️
 
@@ -456,26 +483,20 @@ After our model has finished training, our server will spin up and serve a web a
 
 When the network has been trained, you'll see some output in your logs like the following:
 
-![A image showing the Minishift training logs](/resources/minishift_build_complete.png)
+![training_is_finished](/resources/training_is_finished.png)
 
 The last line tells us that the server has successfully bound to the port we specified (8080) and that it's ready for traffic.
 
-Our application is running in a pod, so we can't directly access the URL provided, but Minishift is a natty little piece of software, so it very helpfully gives us a URL that we can use to access the server in our browser.
+Our application is running in a pod, so we can't directly access the URL provided, but CRC is a natty little piece of software, so it very helpfully gives us a URL that we can use to access the server in our browser.
 
-To find the URL that we can access our app on, click on the `Applications` tab on the left-hand side of the screen (highlighted in yellow), and then click on `Routes` (highlighted in blue).
+To get this URL and open the application web page, get back to the project topology and click on the upper right samll icon, as shown:
 
-![A image showing the Minishift routes tab](/resources/minishift_routes.png)
+![url_to_app](/resources/url_to_app.png)
 
-This will take you to the 'Routes' page. Once there, click on your application name, and you'll be taken through to the routes admin page for your app.
-
-On this page, you'll see a URL (highlighted in red, but yours will be slightly different) that you can use to access the prediction web app that you may remember from the start of the document, and it's ready to go!
-
-![A image showing the public URL for our application pod](/resources/minishift_public_url.png)
-
-Click it, and you'll be taken to our application where you can click and draw a number which our neural network will classify!
+Ypur application should look like following animated image:
+you can click and draw a number which our neural network will classify!
 
 ![A video demonstrating the classification web app](/resources/tada.gif)
-
 
 Go and have some fun, but then do come back here - We're not quite done yet.
 
@@ -483,19 +504,35 @@ Go and have some fun, but then do come back here - We're not quite done yet.
 
 So, we've trained our model, spun up our server, and classified some digits. It's been a ride, but we still need to do a few more small things to ready our app for the big time.
 
-Minishift deployments are ephemeral in nature. If we spin down our deployment, and then spin it back up again, it'll rebuild our application from scratch, so we'll lose our model! Now, we don't want to waste valuable cycles on public infrastructure retraining a model we've just trained locally, nor do we want to have our clusters waiting for an age while that completes. Fortunately it's possible to save our newly trained model and have it deploy with our application when we push it to a cloud environment.
+CRC deployments are ephemeral in nature. If we spin down our deployment, and then spin it back up again, it'll rebuild our application from scratch, so we'll lose our model! Now, we don't want to waste valuable cycles on public infrastructure retraining a model we've just trained locally, nor do we want to have our clusters waiting for an age while that completes. Fortunately it's possible to save our newly trained model and have it deployed with our application when we push it to a cloud environment.
 
 To do this, we're going to SSH into our pod and copy the file to our local system, where we'll commit it to our Git repo. This way, when we deploy on an *Openshift* cluster, the pre-trained model will be pulled from our repository and used straight away by our server - no further training required.
 
 Head back to your terminal and follow these steps...
 
-First, we need to make sure we can access the Openshift CLI tool. It _should_ have been setup when we installed Minishift, but it doesn't always behave, so we can load it into our environment by running the followind command:
+First, we need to make sure we can access the Openshift CLI tool. 
+When you run you "crc start" command, you get the following `INFO` message:
 
-`eval $(minishift oc-env)`
+`INFO To access the cluster, first set up your environment by following 'crc oc-env' instructions `
 
-Next, we want to login with the oc CLI tool with our developer credentials (the same user we've been using in the GUI console - don't worry, you won't need to remember your password for this)
+So proceed and enter: `crc oc-env` on the command line
 
-`oc login -u developer`
+`$crc oc-env`
+
+You will get the following answer:
+
+`export PATH="/Users/ghmoll/.crc/bin:$PATH"`
+`# Run this command to configure your shell:`
+`# eval $(crc oc-env)`
+
+So, proceed as suggested (of YOUR PATH is different)
+
+Next, we want to login with the oc CLI tool with our developer credentials 
+If you do not remember your credentials, type:
+`$crc console --credentials` 
+
+Now type your login line, in my case:
+`oc login -u developer -p developer https://api.crc.testing:6443`
 
 This will set our user for our following commands.
 
@@ -503,11 +540,12 @@ Next, we want to get a list of pods in our deployment, which we can get with:
 
 `oc get pods`
 
-This should output something like this.
+This should output something like this:
+`NAME                                 READY   STATUS      RESTARTS   AGE`
+`mnist-recognition-5-build            0/1     Completed   0          24h`
+`mnist-recognition-6945c94bf8-fcsgz   1/1     Running     1          24h`
 
-![A list of our pods](/resources/minishift_get_pods.png)
-
-If you, like me, have run multiple builds in Minishift, you may have multiple entries, but we're not interested in those, we're only interested in the running pod.
+If you have run multiple builds in CRC, you may have multiple entries, but we're not interested in those, we're only interested in the running pod.
 
 Copy the pod name, and then run the following command to SSH into your machine
 
@@ -519,7 +557,24 @@ This will give you a shell environemt that you can use to interact with your pod
 
 This will list all of the files and directories for our application, and then the working directory for our app, which should be something like `/opt/app-root/src`. Look familiar?
 
-![A list of our apps resources](/resources/minishift_directories.png)
+`drwxrwxr-x. 1 default    root       55 May  7 15:43 .`
+`drwxrwxr-x. 1 default    root       28 May  6 15:13 ..`
+`-rw-rw-r--. 1 default    root      308 May  6 15:01 app.py`
+`drwxrwxr-x. 8 default    root      178 May  6 15:01 .git`
+`-rw-rw-r--. 1 default    root       81 May  6 15:01 .gitignore`
+`drwxr-xr-x. 3 1000540000 root       40 May  7 15:13 .keras`
+`-rw-r--r--. 1 1000540000 root 14432504 May  7 15:43 mnist.h5`
+`drwxrwxr-x. 1 default    root       19 Jan 29 14:13 .pki`
+`drwxr-xr-x. 2 1000540000 root       63 May  7 15:13 __pycache__`
+`-rw-rw-r--. 1 default    root    31926 May  6 15:01 README.md`
+`drwxrwxr-x. 3 default    root       70 May  6 15:01 reference`
+`-rw-rw-r--. 1 default    root       28 May  6 15:01 requirements.txt`
+`drwxrwxr-x. 2 default    root     4096 May  6 15:01 resources`
+`-rw-rw----. 1 default    root     1024 Mar 17 17:02 .rnd`
+`-rw-rw-r--. 1 default    root      762 May  6 15:01 server.py`
+`drwxrwxr-x. 2 default    root       24 May  6 15:01 templates`
+`-rw-rw-r--. 1 default    root     2263 May  6 15:01 train.py`
+`/opt/app-root/src`
 
 Notice how there's a file called `mnist.h5`. This is the file where our ML model is saved - that's what we want to save.
 
@@ -543,4 +598,4 @@ To do this, enter:
 
 `git push origin master`
 
-And Voila! We've learned how to build, train, and deploy a neural network with Minishift.
+And Voila! We've learned how to build, train, and deploy a neural network with CodeReady Containers.
