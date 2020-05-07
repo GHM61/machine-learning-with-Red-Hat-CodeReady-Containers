@@ -374,13 +374,15 @@ Depending on your system's resource, it may take a little while to spin up, so t
 
 Once CRC has finished spinning up, you should see an output in your terminal a bit like the following:
 
-`INFO Starting OpenShift cluster ... [waiting 3m]  `
-`INFO    `                                          
-`INFO To access the cluster, first set up your environment by following 'crc oc-env' instructions `
-`INFO Then you can access it by running 'oc login -u developer -p developer https://api.crc.testing:6443' `
-`INFO To login as an admin, run 'oc login -u kubeadmin -p kKdPx-pjmWe-b3kuu-jeZm3 https://api.crc.testing:6443' `
-`INFO   `                                           
-`INFO You can now run 'crc console' and use these credentials to access the OpenShift web console `
+```
+INFO Starting OpenShift cluster ... [waiting 3m]  
+INFO                                              
+INFO To access the cluster, first set up your environment by following 'crc oc-env' instructions 
+INFO Then you can access it by running 'oc login -u developer -p developer https://api.crc.testing:6443' 
+INFO To login as an admin, run 'oc login -u kubeadmin -p kKdPx-pjmWe-b3kuu-jeZm3 https://api.crc.testing:6443' 
+INFO                                            
+INFO You can now run 'crc console' and use these credentials to access the OpenShift web console 
+```
 
 
 
