@@ -300,7 +300,7 @@ def start():
     stored_model = keras.models.load_model('mnist.h5')
     stored_model._make_predict_function()
 
-    application.run(host='0.0.0.0', port=8080)
+    application.run(host='0.0.0.0', port=8080, threaded=False)
 ```
 
 Before we start listening for requests from client, we need to load our trained model for classifying our inputs with `keras.models.load_model('mnist.h5')`.
