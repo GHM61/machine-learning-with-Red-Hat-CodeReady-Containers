@@ -2,7 +2,7 @@
 
 ## Machine learning dependencies are a hassle...
 
-Note: this lab is an adaptation of initial lab https://github.com/IBMDeveloperUK/machine-learning-with-minishift from Sean Tracey. The initial version was usinig Minishift, the local version of OpenShift v3. Present version is using Red Hat Code Ready Containers (a.k.a. CRC), which is local version of OpenShift v4.
+Note: this lab is an adaptation of initial lab https://github.com/IBMDeveloperUK/machine-learning-with-minishift from Sean Tracey. The initial version was using Minishift, the local version of OpenShift v3. Present version is using Red Hat Code Ready Containers (a.k.a. CRC), which is local version of OpenShift v4.
 
 Between ensuring that the right version Python/Pip are installed on your system, and that it doesn't conflict with other Python/Pip versions on your system AND that when you deploy your model to the cloud that the versions of the dependencies you've used in your projects are still compatible with the version on your cloud-based system, it's a wonder that we ever get any time to focus on building and training our neural networks.
 
@@ -361,7 +361,7 @@ Now it's time for some CRC goodness.
 If you didn't install and setup CRC at the start of this tutorial with [this article](https://developers.redhat.com/blog/2019/09/05/red-hat-openshift-4-on-your-laptop-introducing-red-hat-codeready-containers/), go and do that now.
 
 Do not forget to pull your secret from: https://cloud.redhat.com/openshift/install/crc/installer-provisioned  
-We recommend you put it in a "pull-secret" file at the place you lanch your command lines commands? 
+We recommend you put it in a "pull-secret" file at the place you launch your command lines commands? 
 Now, it's time to fire CRC up 🚀
 
 In your terminal window execute the following to start CRC:
@@ -372,7 +372,7 @@ This will spin up the CRC platform with the relevant driver (hyperkit on a Mac f
 
 Depending on your system's resource, it may take a little while to spin up, so take the opportunity to go and grab a cup of tea.
 
-Once CRC has finished spinning up, you should see an output in your terminal a bit like the following:
+Once CRC has finished spinning up, you should see an output in your terminal like the following:
 
 ```
 INFO Starting OpenShift cluster ... [waiting 3m]  
@@ -445,7 +445,7 @@ It will lead you to a view like this:
 
 ![topology view](/resources/topology_view.png)
 
-From there, yiu can click on the "build pendind" hourglass, or on the "builds" tab
+From there, you can click on the "build pending" hourglass, or on the "builds" tab
 
 ![build tab](/resources/build_tab.png)
 
@@ -454,20 +454,18 @@ You can click on it.
 
 ![click_on_current_build](/resources/click_on_current_build.png)
 
-You can see that the build is now running.
+This will take us through to the build status page for our app, you can see that the build is now running.
 To follow the building steps, click on the log tab:
 
-This will take us through to the build status page for our app. By clicking on `Logs` tab, we can track the progress of our apps build.
-
 ![build_is_running](/resources/build_is_running.png)
-
-### Training our network
 
 Once the build has finished, it will show a message in the log file:
 
 ![build_is_finished](/resources/build_is_finished.png)
 
 Then, our app will automatically start !
+
+### Training our network
 
 On first run, our app won't have a trained network for it to make classifications with, so it'll grab the MNIST dataset and start training the neural network we created in `train.py`.
 
@@ -479,7 +477,7 @@ To view the state of our app, switch to "Administrator", "workloads/pods" and fi
 
 This will take some time to complete, so finish up your last tea, and go and grab another ☕️
 
-### Build complete! Time to play!
+### Training complete! Time to play!
 
 After our model has finished training, our server will spin up and serve a web app that we can use to play with our newly created model.
 
@@ -533,9 +531,9 @@ export PATH="/Users/ghmoll/.crc/bin:$PATH"
 # eval $(crc oc-env)
 ```
 
-So, proceed as suggested (of YOUR PATH is different)
+So, proceed as suggested (of course YOUR PATH is different)
 
-Next, we want to login with the oc CLI tool with our developer credentials 
+Next, we want to login with the oc CLI tool with our developer credentials.
 If you do not remember your credentials, type:
 ```
 $crc console --credentials
